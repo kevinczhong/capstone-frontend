@@ -4,6 +4,7 @@ import LoginView from "../views/LoginView.vue";
 import SignupView from "../views/SignupView.vue";
 import LogoutView from "../views/LogoutView.vue";
 import PropertyIndex from "../views/PropertyIndex.vue";
+import PropertyShow from "../views/PropertyShow.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: "/properties/",
     name: "property-index",
     component: PropertyIndex,
+  },
+  {
+    path: "/properties/:id",
+    name: "property-show",
+    component: PropertyShow,
   },
   {
     path: "/about",

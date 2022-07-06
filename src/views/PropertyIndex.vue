@@ -58,7 +58,7 @@ export default {
               <img v-bind:src="property.image" class="card-img-top" v-bind:alt="property.address" />
               <h5 class="card-title">{{ property.address }}</h5>
               <p class="card-text">{{ property.floor_space }}</p>
-              <!-- <a v-on:click="$router.push(`/posts/${post.id}`)" class="btn btn-primary">More Details</a> -->
+              <a v-on:click="$router.push(`/properties/${property.id}`)" class="btn btn-primary">More Details</a>
               <p v-if="getUserId() == property.user_id">Your Property</p>
             </div>
           </div>
