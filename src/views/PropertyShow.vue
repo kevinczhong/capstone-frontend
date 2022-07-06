@@ -37,7 +37,7 @@ export default {
     <p><button v-on:click="$router.push('/properties/')">Return to Main Page</button></p>
     <div v-if="getUserId() == property.user_id">
       <p><button v-on:click="$router.push(`/properties/${property.id}/edit`)">Edit This Listing</button></p>
-      <button v-on:click="deletePost">Delete This Listing</button>
+      <button v-on:click="deleteProperty">Delete This Listing</button>
     </div>
   </div>
 </template>
