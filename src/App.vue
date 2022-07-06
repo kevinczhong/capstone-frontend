@@ -2,9 +2,13 @@
   <nav>
     <router-link to="/">Home</router-link>
     |
+    <router-link to="/properties">Listings</router-link>
+    |
     <router-link to="/login">Login</router-link>
     |
     <router-link to="/logout">Logout</router-link>
+    |
+    <router-link to="/signup">Signup</router-link>
   </nav>
   <router-view />
 </template>
