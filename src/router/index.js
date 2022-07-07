@@ -5,6 +5,8 @@ import SignupView from "../views/SignupView.vue";
 import LogoutView from "../views/LogoutView.vue";
 import PropertyIndex from "../views/PropertyIndex.vue";
 import PropertyShow from "../views/PropertyShow.vue";
+import PropertyNew from "../views/PropertyNew.vue";
+import PropertyEdit from "../views/PropertyEdit.vue";
 
 const routes = [
   {
@@ -36,6 +38,16 @@ const routes = [
     path: "/properties/:id",
     name: "property-show",
     component: PropertyShow,
+  },
+  {
+    path: "/properties/new",
+    name: "property-new",
+    component: PropertyNew,
+  },
+  {
+    path: "/properties/:id/edit",
+    name: "property-edit",
+    component: PropertyEdit,
   },
   {
     path: "/about",
