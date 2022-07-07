@@ -11,6 +11,14 @@ export default {
   created: function () {
     this.indexProperties();
   },
+  computed: {
+    saleListings() {
+      return this.properties.filter((property) => property.is_rent === false);
+    },
+    rentListings() {
+      return this.properties.filter((property) => property.is_rent === true);
+    },
+  },
   methods: {
     indexProperties: function () {
       axios.get("/properties.json").then((response) => {
@@ -38,6 +46,7 @@ export default {
 <template>
   <div class="home container">
     <h1>Property Listings</h1>
+
     <!-- <p>
       Search by title:
       <input type="text" v-model="titleFilter" list="titles" />
@@ -47,23 +56,19 @@ export default {
     <!-- <button v-on:click="sortByTitle()">Sort By Title</button> -->
     <!-- </p> -->
     <div class="row">
-      <transition-group
-        appear
-        enter-active-class="animate__animated animate__zoomIn"
-        leave-active-class="animate__animated animate__zoomOut"
-      >
-        <div class="col-sm-6" v-for="property in properties" v-bind:key="property.id">
-          <div class="card">
-            <div class="card-body">
-              <img v-bind:src="property.image" class="card-img-top" v-bind:alt="property.address" />
-              <h5 class="card-title">{{ property.address }}</h5>
-              <p class="card-text">{{ property.floor_space }}</p>
-              <a v-on:click="$router.push(`/properties/${property.id}`)" class="btn btn-primary">More Details</a>
-              <p v-if="getUserId() == property.user_id">Your Property</p>
-            </div>
+      <div class="col-sm-6" v-for="property in rentListings" v-bind:key="property.id">
+        <div class="card">
+          <div class="card-body">
+            <img v-bind:src="property.image" class="card-img-top" v-bind:alt="property.address" />
+            <h5 class="card-title">{{ property.address }}</h5>
+            <p class="card-text">{{ property.floor_space }} sq. ft</p>
+            <button v-on:click="$router.push(`/properties/${property.id}`)" class="btn btn-primary">
+              More Details
+            </button>
+            <p v-if="getUserId() == property.user_id">Your Property</p>
           </div>
         </div>
-      </transition-group>
+      </div>
     </div>
     <!-- <div v-for="property in properties" v-bind:key="property.id">
       <h2>{{ property.address }}</h2> -->

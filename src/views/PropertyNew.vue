@@ -11,7 +11,7 @@ export default {
   methods: {
     submit: function () {
       axios
-        .post("/properties", this.newPropParams)
+        .post("/properties.json", this.newPropParams)
         .then((response) => {
           console.log(response.data);
           localStorage.setItem("flashMessage", "Listing Successfully Created");
@@ -36,13 +36,88 @@ export default {
     notPetFriendly: function () {
       this.newPropParams.pet_friendly = false;
     },
+    getUserId: function () {
+      return localStorage.getItem("user_id");
+    },
   },
 };
 </script>
 
 <template>
   <div class="signup container">
-    <form v-on:submit.prevent="submit()">
+    <h1>Create a listing</h1>
+    <div>
+      <label>Is this property for sale or for rent?</label>
+      <p>
+        <button v-on:click="isSale()">This property is for sale</button>
+        <button v-on:click="isRent()">This property is for rent</button>
+      </p>
+    </div>
+    <ul>
+      <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
+    </ul>
+    <div>
+      <p><label>Description:</label></p>
+      <p>
+        <textarea v-model="newPropParams.description"></textarea>
+      </p>
+      <p>
+        <label>Address:</label>
+        <input type="text" v-model="newPropParams.address" />
+      </p>
+      <p>
+        <label>Floor Space:</label>
+        <input type="text" v-model.number="newPropParams.floor_space" />
+      </p>
+      <p>
+        <label>Bedrooms:</label>
+        <input type="text" v-model.number="newPropParams.bedrooms" />
+      </p>
+      <p>
+        <label>Bathrooms:</label>
+        <input type="text" v-model.number="newPropParams.bathrooms" />
+      </p>
+      <p>
+        <label>Balconies:</label>
+        <input type="text" v-model.number="newPropParams.balconies" />
+      </p>
+      <p>
+        <label>Floors:</label>
+        <input type="text" v-model.number="newPropParams.floors" />
+      </p>
+      <p>
+        <label>Year Built:</label>
+        <input type="text" v-model.number="newPropParams.year_built" />
+      </p>
+    </div>
+    <div v-if="newPropParams.is_rent === false">
+      <label>Listing Price:</label>
+      <input type="text" v-model.number="newPropParams.listed_price" />
+    </div>
+    <div v-if="newPropParams.is_rent === true">
+      <p>
+        <label>Monthly Rent:</label>
+        <input type="text" v-model.number="newPropParams.rent" />
+      </p>
+      <p>
+        <label>Lease Type:</label>
+        <input type="text" v-model="newPropParams.lease_type" />
+      </p>
+      <p>
+        <label>Is this property pet-friendly?</label>
+      </p>
+
+      <p>
+        <button v-on:click="petFriendly()">Yes</button>
+        <button v-on:click="notPetFriendly()">No</button>
+      </p>
+    </div>
+    <p>
+      <label>Are you satisfied with your listing information?</label>
+    </p>
+    <button v-on:click="submit()">Yes</button>
+
+    <!-- <form v-on:submit.prevent="submit()">
       <h1>Create a listing</h1>
       <ul>
         <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
@@ -81,13 +156,6 @@ export default {
           <input type="text" v-model.number="newPropParams.year_built" />
         </p>
       </div>
-      <div>
-        <label>Is this property for sale or for rent?</label>
-        <p>
-          <button v-on:click="isSale()">This property is for sale</button>
-          <button v-on:click="isRent()">This property is for rent</button>
-        </p>
-      </div>
       <div v-if="newPropParams.is_rent === false">
         <label>Listing Price:</label>
         <input type="text" v-model.number="newPropParams.listed_price" />
@@ -99,7 +167,7 @@ export default {
         </p>
         <p>
           <label>Lease Type:</label>
-          <input type="text" v-model="newPropParams.rent" />
+          <input type="text" v-model="newPropParams.lease_type" />
         </p>
         <p>
           <label>Is this property pet-friendly?</label>
@@ -110,7 +178,14 @@ export default {
           <button v-on:click="notPetFriendly()">No</button>
         </p>
       </div>
-      <input type="submit" value="Submit" />
-    </form>
+      <p>
+        <label>Are you satisfied with your listing information?</label>
+      </p> -->
+
+    <!-- <p>
+        <button v-on:click="newPropParams.user_id = getUserId()">Confirm</button>
+      </p> -->
+    <!-- <input type="submit" value="Submit" /> -->
+    <!-- </form> -->
   </div>
 </template>
