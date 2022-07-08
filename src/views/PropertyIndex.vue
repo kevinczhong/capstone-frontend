@@ -5,7 +5,7 @@ export default {
   data: function () {
     return {
       properties: [],
-      titleFilter: "",
+      listings: [],
     };
   },
   created: function () {
@@ -13,10 +13,12 @@ export default {
   },
   computed: {
     saleListings() {
-      return this.properties.filter((property) => property.is_rent === false);
+      var listings = this.properties.filter((property) => property.is_rent === false);
+      return listings;
     },
     rentListings() {
-      return this.properties.filter((property) => property.is_rent === true);
+      var listings = this.properties.filter((property) => property.is_rent === true);
+      return listings;
     },
   },
   methods: {
@@ -46,7 +48,10 @@ export default {
 <template>
   <div class="home container">
     <h1>Property Listings</h1>
-
+    <p>
+      <button v-on:click="listings = saleListings">For Sale</button>
+      <button v-on:click="listings = rentListings">For Rent</button>
+    </p>
     <!-- <p>
       Search by title:
       <input type="text" v-model="titleFilter" list="titles" />
@@ -56,10 +61,10 @@ export default {
     <!-- <button v-on:click="sortByTitle()">Sort By Title</button> -->
     <!-- </p> -->
     <div class="row">
-      <div class="col-sm-6" v-for="property in rentListings" v-bind:key="property.id">
+      <div class="col-sm-6" v-for="property in listings" v-bind:key="property.id">
         <div class="card">
           <div class="card-body">
-            <img v-bind:src="property.image" class="card-img-top" v-bind:alt="property.address" />
+            <img v-bind:src="property.images[0].image_url" class="card-img-top" v-bind:alt="property.address" />
             <h5 class="card-title">{{ property.address }}</h5>
             <p class="card-text">{{ property.floor_space }} sq. ft</p>
             <button v-on:click="$router.push(`/properties/${property.id}`)" class="btn btn-primary">
