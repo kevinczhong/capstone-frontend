@@ -126,7 +126,22 @@ export default {
   <div class="home container">
     <h2>{{ property.title }}</h2>
     <img v-bind:src="property.images[0].image_url" v-bind:alt="property.title" />
+    <h1>{{ property.address }}</h1>
     <p>{{ property.description }}</p>
+    <div v-if="property.is_rent === false">
+      <h1>${{ property.listed_price }}</h1>
+    </div>
+    <div v-if="property.is_rent === true">
+      <h1>${{ property.rent }}</h1>
+      <p>{{ property.lease_type }}</p>
+      <div v-if="property.pet_friendly === true">This is a pet-friendly property</div>
+      <div v-if="property.pet_friendly === false">This is not a pet-friendly property</div>
+    </div>
+    <p>{{ property.floor_space }} sq. ft</p>
+    <p>Bedrooms: {{ property.bedrooms }}</p>
+    <p>Bathrooms: {{ property.bathrooms }}</p>
+    <p>Balconies: {{ property.balconies }}</p>
+    <p>Floors: {{ property.floors }}</p>
     <!-- <router-link to="/propertys/">Back to all propertys</router-link>
     <p><router-link v-bind:to="`/propertys/${property.id}/edit`">Edit property</router-link></p> -->
     <p><button v-on:click="$router.push('/properties/')">Return to Main Page</button></p>
@@ -136,18 +151,21 @@ export default {
     </div>
   </div>
   <div class="simple-example container">
-    <vue-meeting-selector
-      class="simple-example__meeting-selector"
-      v-model="meeting"
-      :date="date"
-      :loading="loading"
-      :class-names="classNames"
-      :meetings-days="meetingsDays"
-      @next-date="nextDate"
-      @previous-date="previousDate"
-    />
+    <p>
+      <vue-meeting-selector
+        class="simple-example__meeting-selector"
+        v-model="meeting"
+        :date="date"
+        :loading="loading"
+        :class-names="classNames"
+        :meetings-days="meetingsDays"
+        @next-date="nextDate"
+        @previous-date="previousDate"
+      />
+    </p>
     <p>meeting Selected: {{ meeting ? meeting : "No Meeting selected" }}</p>
     <div v-if="meeting != null">
+      <p>{{ meeting.date }}</p>
       <button v-on:click="scheduleTour()">Schedule Tour</button>
     </div>
   </div>

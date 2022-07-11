@@ -6,6 +6,8 @@
     |
     <router-link to="/properties/new">Create A Listing</router-link>
     |
+    <router-link to="/tours">Your Tours</router-link>
+    |
     <router-link to="/login">Login</router-link>
     |
     <router-link to="/logout">Logout</router-link>
