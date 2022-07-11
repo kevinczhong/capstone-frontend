@@ -4,18 +4,50 @@ import axios from "axios";
 export default {
   data: function () {
     return {
+      properties: [],
       newPropParams: {},
+      newImageParams: {},
       errors: [],
     };
   },
+  created: function () {
+    this.indexProperties();
+  },
   methods: {
+    finish: function () {
+      this.$router.push("/properties/");
+    },
+    indexProperties: function () {
+      axios.get("/properties.json").then((response) => {
+        console.log(response.data);
+        this.properties = response.data;
+      });
+    },
     submit: function () {
       axios
         .post("/properties.json", this.newPropParams)
         .then((response) => {
           console.log(response.data);
           localStorage.setItem("flashMessage", "Listing Successfully Created");
-          this.$router.push("/properties/");
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+          this.errorStatus = error.response.status;
+        });
+    },
+    submitImage: function () {
+      var last = Math.max.apply(
+        Math,
+        this.properties.map(function (property) {
+          return property.id;
+        })
+      );
+      this.newImageParams.property_id = last + 1;
+      axios
+        .post("/images.json", this.newImageParams)
+        .then((response) => {
+          console.log(response.data);
+          localStorage.setItem("flashMessage", "Image Successfully Uploaded");
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
@@ -116,6 +148,18 @@ export default {
       <label>Are you satisfied with your listing information?</label>
     </p>
     <button v-on:click="submit()">Yes</button>
+    <div>
+      <p>
+        <label>Upload Images:</label>
+        <input type="text" v-model="newImageParams.image_url" />
+        <button v-on:click="submitImage()">Upload</button>
+      </p>
+    </div>
+    <div>
+      <p>
+        <button v-on:click="finish()">Finish</button>
+      </p>
+    </div>
 
     <!-- <form v-on:submit.prevent="submit()">
       <h1>Create a listing</h1>
