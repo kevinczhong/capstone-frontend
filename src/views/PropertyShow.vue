@@ -2,11 +2,17 @@
 import axios from "axios";
 import VueMeetingSelector from "vue-meeting-selector";
 import slotsGenerator from "@/helpers/slotsGenerator";
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 
 export default {
   name: "SimpleExample",
   components: {
     VueMeetingSelector,
+    Carousel,
+    Slide,
+    Pagination,
+    Navigation,
   },
   data: function () {
     return {
@@ -124,8 +130,16 @@ export default {
 
 <template>
   <div class="home container">
-    <h2>{{ property.title }}</h2>
-    <img v-bind:src="property.images[0].image_url" v-bind:alt="property.title" />
+    <carousel :items-to-show="1">
+      <slide v-for="image in property.images" :key="image">
+        <img v-bind:src="image.image_url" v-bind:alt="property.title" />
+      </slide>
+
+      <template #addons>
+        <navigation />
+        <pagination />
+      </template>
+    </carousel>
     <h1>{{ property.address }}</h1>
     <p>{{ property.description }}</p>
     <div v-if="property.is_rent === false">
