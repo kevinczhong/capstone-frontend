@@ -1,5 +1,7 @@
 <script>
 import axios from "axios";
+var moment = require("moment"); // require
+moment().format();
 
 export default {
   data: function () {
@@ -20,16 +22,8 @@ export default {
       return localStorage.getItem("user_id");
     },
     formattingDate: function (date) {
-      const d = new Date(date);
-      d.toLocaleString("en-us", {
-        weekday: "short", // long, short, narrow
-        day: "numeric", // numeric, 2-digit
-        year: "numeric", // numeric, 2-digit
-        month: "long", // numeric, 2-digit, long, short, narrow
-        hour: "numeric", // numeric, 2-digit
-        minute: "numeric", // numeric, 2-digit
-        second: "numeric", // numeric, 2-digit
-      });
+      var d = new Date(date);
+      d = moment(d).format("llll");
       return d;
     },
   },
