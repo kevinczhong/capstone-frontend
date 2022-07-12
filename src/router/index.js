@@ -9,6 +9,7 @@ import PropertyNew from "../views/PropertyNew.vue";
 import PropertyEdit from "../views/PropertyEdit.vue";
 import TourIndex from "../views/TourIndex.vue";
 import TourShow from "../views/TourShow.vue";
+import FavoriteIndex from "../views/FavoriteIndex.vue";
 
 const routes = [
   {
@@ -60,6 +61,11 @@ const routes = [
     path: "/tours/:id",
     name: "tour-show",
     component: TourShow,
+  },
+  {
+    path: "/favorites/",
+    name: "favorite-index",
+    component: FavoriteIndex,
   },
   {
     path: "/about",

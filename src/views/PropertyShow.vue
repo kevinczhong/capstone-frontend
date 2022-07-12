@@ -19,6 +19,7 @@ export default {
       property: [],
       errors: [],
       newTourParams: {},
+      newFavParams: {},
       date: new Date(),
       meetingsDays: [],
       meeting: null,
@@ -56,6 +57,19 @@ export default {
         localStorage.setItem("flashMessage", "Listing Successfully Deleted");
         this.$router.push("/properties/");
       });
+    },
+    createFavorite: function () {
+      this.newFavParams.user_id = this.getUserId();
+      this.newFavParams.property_id = this.property.id;
+      axios
+        .post("/favorites.json", this.newFavParams)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          this.errors = error.response.data.errors;
+          this.errorStatus = error.response.status;
+        });
     },
     scheduleTour: function () {
       this.newTourParams.seller_id = this.property.user_id;
@@ -163,6 +177,7 @@ export default {
       <p><button v-on:click="$router.push(`/properties/${property.id}/edit`)">Edit This Listing</button></p>
       <button v-on:click="deleteProperty">Delete This Listing</button>
     </div>
+    <p><button v-on:click="createFavorite">Favorite This Listing</button></p>
   </div>
   <div class="simple-example container">
     <p>
