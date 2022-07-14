@@ -47,10 +47,17 @@ export default {
 
 <template>
   <div class="home container">
-    <h1>Property Listings</h1>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="title-box-d section-t4">
+          <h3 class="title-d">Property Listings</h3>
+        </div>
+      </div>
+    </div>
     <p>
-      <button v-on:click="listings = saleListings">For Sale</button>
-      <button v-on:click="listings = rentListings">For Rent</button>
+      <button v-on:click="listings = saleListings" class="btn btn-primary">For Sale</button>
+      |
+      <button v-on:click="listings = rentListings" class="btn btn-primary">For Rent</button>
     </p>
     <!-- <p>
       Search by title:
@@ -60,7 +67,66 @@ export default {
       </datalist> -->
     <!-- <button v-on:click="sortByTitle()">Sort By Title</button> -->
     <!-- </p> -->
-    <div class="row">
+
+    <!-- ======= Property Grid ======= -->
+    <section class="property-grid grid">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="grid-option"></div>
+          </div>
+          <div class="col-md-12">
+            <div class="card-box-a card-shadow" v-for="property in listings" v-bind:key="property.id">
+              <div class="img-box-a">
+                <img v-bind:src="property.images[0].image_url" v-bind:alt="property.address" class="img-a img-fluid" />
+              </div>
+              <div class="card-overlay">
+                <div class="card-overlay-a-content">
+                  <div class="card-header-a">
+                    <h2 class="card-title-a">
+                      <a href="#">
+                        {{ property.address }}
+                      </a>
+                    </h2>
+                  </div>
+                  <div class="card-body-a">
+                    <div class="price-box d-flex">
+                      <span class="price-a" v-if="property.is_rent === false">$ {{ property.listed_price }}</span>
+                      <span class="price-a" v-if="property.is_rent === true">$ {{ property.rent }}</span>
+                    </div>
+                    <button v-on:click="$router.push(`/properties/${property.id}`)" class="btn btn-primary">
+                      Click here to view
+                      <span class="bi bi-chevron-right"></span>
+                    </button>
+                  </div>
+                  <div class="card-footer-a">
+                    <ul class="card-info d-flex justify-content-around">
+                      <li>
+                        <h4 class="card-info-title">Area</h4>
+                        <span>
+                          {{ property.floor_space }} ft
+                          <sup>2</sup>
+                        </span>
+                      </li>
+                      <li>
+                        <h4 class="card-info-title">Beds</h4>
+                        <span>{{ property.bedrooms }}</span>
+                      </li>
+                      <li>
+                        <h4 class="card-info-title">Baths</h4>
+                        <span>{{ property.bathrooms }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Property Grid Single-->
+    <!-- <div class="row">
       <div class="col-sm-6" v-for="property in listings" v-bind:key="property.id">
         <div class="card">
           <div class="card-body">
@@ -74,7 +140,7 @@ export default {
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- <div v-for="property in properties" v-bind:key="property.id">
       <h2>{{ property.address }}</h2> -->
     <!-- <img v-bind:src="post.image" v-bind:alt="post.title" /> -->

@@ -17,6 +17,10 @@ export default {
   data: function () {
     return {
       property: [],
+      data: [],
+      assessment: [],
+      isLoggedIn: false,
+      flashMessage: "",
       errors: [],
       newTourParams: {},
       newFavParams: {},
@@ -27,9 +31,24 @@ export default {
       nbDaysToDisplay: 7,
     };
   },
+  watch: {
+    $route: function () {
+      this.isLoggedIn = !!localStorage.jwt;
+      this.flashMessage = localStorage.getItem("flashMessage");
+      localStorage.removeItem("flashMessage");
+    },
+  },
   async created() {
     axios.get("/properties/" + this.$route.params.id + ".json").then((response) => {
       this.property = response.data;
+    });
+    axios.get("/properties/" + this.$route.params.id + "/data.json").then((response) => {
+      this.data = response.data;
+      console.log(response.data);
+    });
+    axios.get("/properties/" + this.$route.params.id + "/assessment.json").then((response) => {
+      this.assessment = response.data;
+      console.log(response.data);
     });
     const start = {
       hours: 8,
@@ -143,8 +162,27 @@ export default {
 </script>
 
 <template>
+  <section class="intro-single">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-lg-8">
+          <div class="title-single-box">
+            <h1 class="title-single">{{ property.address }}</h1>
+            <div v-if="property.is_rent === false">
+              <h2>${{ property.listed_price }}</h2>
+              <h3 style="color: grey">Market Estimate: ${{ assessment.bundle[0].zestimate }}</h3>
+            </div>
+            <div v-if="property.is_rent === true">
+              <h2>${{ property.rent }} per month</h2>
+              <h3 style="color: grey">Market Estimate: ${{ assessment.bundle[0].rentalZestimate }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <div class="home container">
-    <carousel :items-to-show="1">
+    <carousel :items-to-show="0.5">
       <slide v-for="image in property.images" :key="image">
         <img v-bind:src="image.image_url" v-bind:alt="property.title" />
       </slide>
@@ -154,7 +192,105 @@ export default {
         <pagination />
       </template>
     </carousel>
-    <h1>{{ property.address }}</h1>
+    <div class="property-summary">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="title-box-d section-t4">
+            <h3 class="title-d">Quick Summary</h3>
+          </div>
+        </div>
+      </div>
+      <div class="summary-list">
+        <ul class="list">
+          <li class="d-flex justify-content-between">
+            <strong>Status:</strong>
+            <span v-if="property.is_rent == false">Sale</span>
+            <span v-if="property.is_rent == true">Rent</span>
+          </li>
+          <li class="d-flex justify-content-between" v-if="property.is_rent == false">
+            <strong>Area:</strong>
+            <span>
+              {{ data.bundle[0].areas[3].areaSquareFeet }}ft
+              <sup>2</sup>
+            </span>
+          </li>
+          <li class="d-flex justify-content-between" v-if="property.is_rent == true">
+            <strong>Area:</strong>
+            <span>
+              {{ property.floor_space }}ft
+              <sup>2</sup>
+            </span>
+          </li>
+          <li class="d-flex justify-content-between">
+            <strong>Year Built:</strong>
+            <span>{{ data.bundle[0].building[0].yearBuilt }}</span>
+          </li>
+          <li class="d-flex justify-content-between">
+            <strong>Beds:</strong>
+            <span>{{ data.bundle[0].building[0].bedrooms }}</span>
+          </li>
+          <li class="d-flex justify-content-between">
+            <strong>Baths:</strong>
+            <span>{{ data.bundle[0].building[0].fullBaths }}</span>
+          </li>
+          <!-- <li class="d-flex justify-content-between">
+            <strong>Floors:</strong>
+            <span>{{ property.floors }}</span>
+          </li> -->
+          <li class="d-flex justify-content-between" v-if="property.is_rent == false">
+            <strong>Type:</strong>
+            <span>{{ data.bundle[0].landUseDescription }}</span>
+          </li>
+          <li class="d-flex justify-content-between" v-if="property.is_rent == false">
+            <strong>Heating:</strong>
+            <span>{{ data.bundle[0].building[0].heating }}</span>
+          </li>
+          <li class="d-flex justify-content-between" v-if="property.is_rent == false">
+            <strong>Sewage:</strong>
+            <span>{{ data.bundle[0].building[0].sewer }}</span>
+          </li>
+          <li class="d-flex justify-content-between" v-if="property.is_rent == false">
+            <strong>Lot Size:</strong>
+            <span>
+              {{ data.bundle[0].lotSizeSquareFeet }}ft
+              <sup>2</sup>
+            </span>
+          </li>
+          <div v-if="property.is_rent === true">
+            <li class="d-flex justify-content-between">
+              <strong>Lease Type:</strong>
+              <span>{{ property.lease_type }}</span>
+            </li>
+            <li class="d-flex justify-content-between">
+              <strong>Pet Friendly:</strong>
+              <span>{{ property.pet_friendly }}</span>
+            </li>
+          </div>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-7 col-lg-7 section-md-t3">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="title-box-d">
+            <h3 class="title-d">Property Description</h3>
+          </div>
+        </div>
+      </div>
+      <div class="property-description">
+        <p class="description color-text-a">
+          {{ property.description }}
+        </p>
+      </div>
+    </div>
+    <div class="row section-t3" v-if="getUserId() != null">
+      <div class="col-sm-12">
+        <div class="title-box-d">
+          <h3 class="title-d">Tours</h3>
+        </div>
+      </div>
+    </div>
+    <!-- <h1>{{ property.address }}</h1>
     <p>{{ property.description }}</p>
     <div v-if="property.is_rent === false">
       <h1>${{ property.listed_price }}</h1>
@@ -169,17 +305,17 @@ export default {
     <p>Bedrooms: {{ property.bedrooms }}</p>
     <p>Bathrooms: {{ property.bathrooms }}</p>
     <p>Balconies: {{ property.balconies }}</p>
-    <p>Floors: {{ property.floors }}</p>
+    <p>Floors: {{ property.floors }}</p> -->
     <!-- <router-link to="/propertys/">Back to all propertys</router-link>
     <p><router-link v-bind:to="`/propertys/${property.id}/edit`">Edit property</router-link></p> -->
-    <p><button v-on:click="$router.push('/properties/')">Return to Main Page</button></p>
+    <!-- <p><button v-on:click="$router.push('/properties/')">Return to Main Page</button></p>
     <div v-if="getUserId() == property.user_id">
       <p><button v-on:click="$router.push(`/properties/${property.id}/edit`)">Edit This Listing</button></p>
-      <button v-on:click="deleteProperty">Delete This Listing</button>
+      <p><button v-on:click="deleteProperty">Delete This Listing</button></p>
     </div>
-    <p><button v-on:click="createFavorite">Favorite This Listing</button></p>
+    <p><button v-on:click="createFavorite">Favorite This Listing</button></p> -->
   </div>
-  <div class="simple-example container">
+  <div class="simple-example container" v-if="getUserId() != null">
     <p>
       <vue-meeting-selector
         class="simple-example__meeting-selector"
@@ -192,10 +328,29 @@ export default {
         @previous-date="previousDate"
       />
     </p>
-    <p>meeting Selected: {{ meeting ? meeting : "No Meeting selected" }}</p>
+    <!-- <p>meeting Selected: {{ meeting ? meeting : "No Meeting selected" }}</p> -->
     <div v-if="meeting != null">
       <p>{{ meeting.date }}</p>
-      <button v-on:click="scheduleTour()">Schedule Tour</button>
+      <button v-on:click="scheduleTour()" class="btn btn-primary">Schedule Tour</button>
+    </div>
+    <div class="row section-t3">
+      <div class="col-sm-12">
+        <div class="title-box-d">
+          <h3 class="title-d">Other Options</h3>
+        </div>
+      </div>
+    </div>
+    <p><button v-on:click="$router.push('/properties/')" class="btn btn-primary">Return to Main Page</button></p>
+    <div v-if="getUserId() == property.user_id">
+      <p>
+        <button v-on:click="$router.push(`/properties/${property.id}/edit`)" class="btn btn-primary">
+          Edit This Listing
+        </button>
+      </p>
+      <p><button v-on:click="deleteProperty" class="btn btn-primary">Delete This Listing</button></p>
+    </div>
+    <div v-if="getUserId() != property.user_id">
+      <p><button v-on:click="createFavorite" class="btn btn-primary">Favorite This Listing</button></p>
     </div>
   </div>
 </template>

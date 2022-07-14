@@ -47,23 +47,63 @@ export default {
   <div class="home container">
     <!-- <router-link to="/posts/">Back to all posts</router-link>
     <p><router-link v-bind:to="`/posts/${post.id}/edit`">Edit post</router-link></p> -->
-    <h2>You have a tour at:</h2>
-    <h3>{{ tour.property.address }} at {{ formattingDate(tour.time) }}</h3>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="title-box-d section-t4">
+          <h3 class="title-d">You have a tour scheduled for:</h3>
+        </div>
+      </div>
+    </div>
+    <h3>{{ formattingDate(tour.time) }}</h3>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="title-box-d section-t4">
+          <h3 class="title-d">At this property:</h3>
+        </div>
+      </div>
+    </div>
+    <h3>{{ tour.property.address }}</h3>
     <div v-if="getUserId() == tour.buyer_id">
-      <h2>Your Contact:</h2>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="title-box-d section-t4">
+            <h3 class="title-d">Your Contact</h3>
+          </div>
+        </div>
+      </div>
       <h3>{{ tour.seller.username }}</h3>
       <h3>{{ tour.seller.email }}</h3>
       <h3>{{ tour.seller.phone_number }}</h3>
-      <button v-on:click="deleteTour">Unschedule This Tour</button>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="title-box-d section-t4">
+            <h3 class="title-d">Other Options</h3>
+          </div>
+        </div>
+      </div>
+      <p><button v-on:click="deleteTour" class="btn btn-primary">Unschedule This Tour</button></p>
     </div>
     <div v-if="getUserId() == tour.seller_id">
-      <h2>Your Contact:</h2>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="title-box-d section-t4">
+            <h3 class="title-d">Your Contact</h3>
+          </div>
+        </div>
+      </div>
       <h3>{{ tour.buyer.username }}</h3>
       <h3>{{ tour.buyer.email }}</h3>
       <h3>{{ tour.buyer.phone_number }}</h3>
-      <button v-on:click="deleteTour">Unschedule This Tour</button>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="title-box-d section-t4">
+            <h3 class="title-d">Other Options</h3>
+          </div>
+        </div>
+      </div>
+      <p><button v-on:click="deleteTour" class="btn btn-primary">Unschedule This Tour</button></p>
     </div>
-    <p><button v-on:click="$router.push('/tours/')">Return to Tours</button></p>
+    <p><button v-on:click="$router.push('/tours/')" class="btn btn-primary">Return to Tours</button></p>
     <!-- <div v-if="getUserId() == tour.buyer.id">
       <button v-on:click="deleteTour">Unschedule This Tour</button>
     </div> -->

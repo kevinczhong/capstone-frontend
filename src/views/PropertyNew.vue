@@ -77,12 +77,19 @@ export default {
 
 <template>
   <div class="signup container">
-    <h1>Create a listing</h1>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="title-box-d section-t4">
+          <h3 class="title-d">Create A New Listing</h3>
+        </div>
+      </div>
+    </div>
     <div>
       <label>Is this property for sale or for rent?</label>
       <p>
-        <button v-on:click="isSale()">This property is for sale</button>
-        <button v-on:click="isRent()">This property is for rent</button>
+        <button v-on:click="isSale()" class="btn btn-primary">This property is for sale</button>
+        |
+        <button v-on:click="isRent()" class="btn btn-primary">This property is for rent</button>
       </p>
     </div>
     <ul>
@@ -97,30 +104,30 @@ export default {
         <label>Address:</label>
         <input type="text" v-model="newPropParams.address" />
       </p>
-      <p>
+      <!-- <p>
         <label>Floor Space:</label>
         <input type="text" v-model.number="newPropParams.floor_space" />
-      </p>
-      <p>
+      </p> -->
+      <!-- <p>
         <label>Bedrooms:</label>
         <input type="text" v-model.number="newPropParams.bedrooms" />
-      </p>
-      <p>
+      </p> -->
+      <!-- <p>
         <label>Bathrooms:</label>
         <input type="text" v-model.number="newPropParams.bathrooms" />
-      </p>
-      <p>
+      </p> -->
+      <!-- <p>
         <label>Balconies:</label>
         <input type="text" v-model.number="newPropParams.balconies" />
-      </p>
-      <p>
+      </p> -->
+      <!-- <p>
         <label>Floors:</label>
         <input type="text" v-model.number="newPropParams.floors" />
-      </p>
-      <p>
+      </p> -->
+      <!-- <p>
         <label>Year Built:</label>
         <input type="text" v-model.number="newPropParams.year_built" />
-      </p>
+      </p> -->
     </div>
     <div v-if="newPropParams.is_rent === false">
       <label>Listing Price:</label>
@@ -140,24 +147,33 @@ export default {
       </p>
 
       <p>
-        <button v-on:click="petFriendly()">Yes</button>
-        <button v-on:click="notPetFriendly()">No</button>
+        <button v-on:click="petFriendly()" class="btn btn-primary">Yes</button>
+        |
+        <button v-on:click="notPetFriendly()" class="btn btn-primary">No</button>
       </p>
     </div>
     <p>
       <label>Are you satisfied with your listing information?</label>
     </p>
-    <button v-on:click="submit()">Yes</button>
+    <button v-on:click="submit()" class="btn btn-primary">Yes</button>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="title-box-d section-t4">
+          <h3 class="title-d">Upload Images</h3>
+        </div>
+      </div>
+    </div>
     <div>
       <p>
-        <label>Upload Images:</label>
+        <label>Enter Image URLs Here:</label>
         <input type="text" v-model="newImageParams.image_url" />
-        <button v-on:click="submitImage()">Upload</button>
+        |
+        <button v-on:click="submitImage()" class="btn btn-primary">Upload</button>
       </p>
     </div>
     <div>
       <p>
-        <button v-on:click="finish()">Finish</button>
+        <button v-on:click="finish()" class="btn btn-primary">Finish</button>
       </p>
     </div>
 
