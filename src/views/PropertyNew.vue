@@ -104,18 +104,18 @@ export default {
         <label>Address:</label>
         <input type="text" v-model="newPropParams.address" />
       </p>
-      <!-- <p>
+      <p>
         <label>Floor Space:</label>
         <input type="text" v-model.number="newPropParams.floor_space" />
-      </p> -->
-      <!-- <p>
+      </p>
+      <p>
         <label>Bedrooms:</label>
         <input type="text" v-model.number="newPropParams.bedrooms" />
-      </p> -->
-      <!-- <p>
+      </p>
+      <p>
         <label>Bathrooms:</label>
         <input type="text" v-model.number="newPropParams.bathrooms" />
-      </p> -->
+      </p>
       <!-- <p>
         <label>Balconies:</label>
         <input type="text" v-model.number="newPropParams.balconies" />

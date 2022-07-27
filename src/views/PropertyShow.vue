@@ -235,7 +235,7 @@ export default {
           </li>
           <!-- <li class="d-flex justify-content-between">
             <strong>Floors:</strong>
-            <span>{{ property.floors }}</span>
+            <span>{{ data.bundle[0].building[0].totalStories }}</span>
           </li> -->
           <li class="d-flex justify-content-between" v-if="property.is_rent == false">
             <strong>Type:</strong>
