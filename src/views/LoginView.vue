@@ -47,5 +47,8 @@ export default {
       </div>
       <input type="submit" value="Submit" />
     </form>
+    <p>Sample Credentials:</p>
+    <p>Email: john@test.com</p>
+    <p>Password: password</p>
   </div>
 </template>
